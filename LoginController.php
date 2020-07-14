@@ -50,4 +50,15 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+
+
+    // Checker For User Account Blocking
+    protected function credentials(Request $request){
+        $credentials = $request->only($this->username(), 'password'); // Getting data from user login form
+        // dd($credentials);
+        $array = \Arr::add($credentials, 'status', 0); // 0 Means user account is active|Not blocked (Any other number in $db means user cannot login/Is blocked)
+
+        return $array; // Returns and passes user data to auth to allow for login and session
+    }
 }
